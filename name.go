@@ -13,12 +13,12 @@ func (f *faker) LastName() (string, error) {
 func (f *faker) FullName() (string, error) {
 	firstName, err := f.FirstName()
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	lastName, err := f.LastName()
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	return fmt.Sprintf("%s %s", firstName, lastName), nil
