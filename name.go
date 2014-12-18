@@ -7,8 +7,8 @@ func (f *faker) FirstName() (string, error) {
 }
 
 func FirstName() string {
-	v, _ := defaultFaker.FirstName()
-	return v
+	s, _ := defaultFaker.FirstName()
+	return s
 }
 
 func (f *faker) LastName() (string, error) {
@@ -16,8 +16,8 @@ func (f *faker) LastName() (string, error) {
 }
 
 func LastName() string {
-	v, _ := defaultFaker.LastName()
-	return v
+	s, _ := defaultFaker.LastName()
+	return s
 }
 
 func (f *faker) FullName() (string, error) {
@@ -35,6 +35,6 @@ func (f *faker) FullName() (string, error) {
 }
 
 func FullName() string {
-	v, _ := defaultFaker.FullName()
-	return v
+	s, _ := defaultFaker.FullName()
+	return s
 }

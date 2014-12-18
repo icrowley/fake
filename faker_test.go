@@ -38,3 +38,18 @@ func TestFakerRuWithCallback(t *testing.T) {
 		t.Error("Faker call with no samples with callback should not return blank string")
 	}
 }
+
+func TestDefaults(t *testing.T) {
+	name := faker.FullName()
+	if name == "" {
+		t.Error("Default faker call should return a string")
+	}
+}
+
+func TestDefaultRu(t *testing.T) {
+	faker.SetLang("ru")
+	name := faker.FullName()
+	if name != "" {
+		t.Errorf("Default faker call should return blank string with no existing samples, but returned %s\n", name)
+	}
+}

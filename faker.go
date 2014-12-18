@@ -12,8 +12,8 @@ var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 type noSamplesError string
 
-func (fe noSamplesError) Error() string {
-	return fmt.Sprintf("No samples for language: %s", fe)
+func (str noSamplesError) Error() string {
+	return fmt.Sprintf("No samples for language: %s", str)
 }
 
 // Config used to congigure faker
@@ -30,7 +30,8 @@ type Faker interface {
 	FullName() (string, error)
 }
 
-type samplesMap map[string]map[string][]string
+// cat/subcat/lang/samples
+type samplesMap map[string]map[string]map[string][]string
 
 type faker struct {
 	lang         string
@@ -49,17 +50,28 @@ func NewFaker(config *Config) Faker {
 	}
 }
 
-func (f *faker) lookup(cat, subcat string) (string, error) {
+func (f *faker) lookup(params ...string) (string, error) {
+	if len(params) < 2 {
+		return "", fmt.Errorf("Insufficient params to lookup rhe samples")
+	}
+
+	cat := params[0]
+	subcat := params[1]
+	lang := f.lang
+	if len(params) > 2 {
+		lang = params[2]
+	}
+
 	var samples []string
 	var err error
 
 	_, ok := f.samples[cat]
 	if ok {
-		samples, ok = f.samples[cat][subcat]
+		samples, ok = f.samples[cat][subcat][lang]
 	}
 
 	if !ok {
-		samples, err = f.populateSamples(cat, subcat)
+		samples, err = f.populateSamples(cat, subcat, lang)
 		if err != nil {
 			return "", err
 		}
@@ -69,6 +81,7 @@ func (f *faker) lookup(cat, subcat string) (string, error) {
 }
 
 func (f *faker) readSamplesFile(cat, subcat, lang string) ([]byte, error) {
+	fmt.Println("Here")
 	var suffix string
 	if lang != "en" {
 		suffix = "_" + lang
@@ -86,18 +99,22 @@ func (f *faker) readSamplesFile(cat, subcat, lang string) ([]byte, error) {
 	return ioutil.ReadAll(file)
 }
 
-func (f *faker) populateSamples(cat, subcat string) ([]string, error) {
-	data, err := f.readSamplesFile(cat, subcat, f.lang)
+func (f *faker) populateSamples(cat, subcat, lang string) ([]string, error) {
+	data, err := f.readSamplesFile(cat, subcat, lang)
 	if err != nil {
 		return nil, err
 	}
 
 	if _, ok := f.samples[cat]; !ok {
-		f.samples[cat] = make(map[string][]string)
+		f.samples[cat] = make(map[string]map[string][]string)
+	}
+
+	if _, ok := f.samples[cat][subcat]; !ok {
+		f.samples[cat][subcat] = make(map[string][]string)
 	}
 
 	samples := strings.Split(string(data), "\n")
 
-	f.samples[cat][subcat] = samples
+	f.samples[cat][subcat][lang] = samples
 	return samples, nil
 }
