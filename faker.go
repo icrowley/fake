@@ -10,6 +10,12 @@ import (
 
 var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 
+var (
+	ErrInsufficientParams = fmt.Errorf("Insufficient params to lookup the samples")
+	ErrNoLanguageFn       = func(lang string) error { return fmt.Errorf("The language passed (%s) is not available", lang) }
+	ErrNoSamplesFn        = func(lang string) error { return fmt.Errorf("No samples for language: %s", lang) }
+)
+
 // Config used to congigure faker
 type Config struct {
 	Lang         string
@@ -65,14 +71,14 @@ func checkLang(config Config) error {
 		}
 	}
 	if !found {
-		return fmt.Errorf("The language passed (%s) is not available", config.Lang)
+		return ErrNoLanguageFn(config.Lang)
 	}
 	return nil
 }
 
 func (f *faker) lookup(params ...string) (string, error) {
 	if len(params) < 2 {
-		return "", fmt.Errorf("Insufficient params to lookup rhe samples")
+		return "", ErrInsufficientParams
 	}
 
 	cat := params[0]
@@ -111,7 +117,7 @@ func (f *faker) readSamplesFile(cat, subcat, lang string) ([]byte, error) {
 		if f.lang != "en" && f.enFallback {
 			return f.readSamplesFile(cat, subcat, "en")
 		}
-		return nil, fmt.Errorf("No samples for language: %s", lang)
+		return nil, ErrNoSamplesFn(lang)
 	}
 	defer file.Close()
 
