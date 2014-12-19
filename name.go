@@ -1,6 +1,10 @@
 package fake
 
-import "fmt"
+import (
+	"math/rand"
+
+	"fmt"
+)
 
 func (f *faker) FirstName() (string, error) {
 	return f.lookup("name", "last_names")
@@ -20,6 +24,54 @@ func LastName() string {
 	return s
 }
 
+func (f *faker) FullNameWithPrefix() (string, error) {
+	prefix, err := f.lookup("name", "prefixes")
+	if err != nil {
+		return "", err
+	}
+
+	firstName, err := f.FirstName()
+	if err != nil {
+		return "", err
+	}
+
+	lastName, err := f.LastName()
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%s %s %s", prefix, firstName, lastName), nil
+}
+
+func FullNameWithPrefix() string {
+	s, _ := defaultFaker.FullNameWithPrefix()
+	return s
+}
+
+func (f *faker) FullNameWithSuffix() (string, error) {
+	suffix, err := f.lookup("name", "suffixes")
+	if err != nil {
+		return "", err
+	}
+
+	firstName, err := f.FirstName()
+	if err != nil {
+		return "", err
+	}
+
+	lastName, err := f.LastName()
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%s %s %s", firstName, lastName, suffix), nil
+}
+
+func FullNameWithSuffix() string {
+	s, _ := defaultFaker.FullNameWithSuffix()
+	return s
+}
+
 func (f *faker) FullName() (string, error) {
 	firstName, err := f.FirstName()
 	if err != nil {
@@ -31,7 +83,15 @@ func (f *faker) FullName() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("%s %s", firstName, lastName), nil
+	n := rand.Intn(10)
+	switch n {
+	case 0:
+		return f.FullNameWithSuffix()
+	case 1:
+		return f.FullNameWithPrefix()
+	default:
+		return fmt.Sprintf("%s %s", firstName, lastName), nil
+	}
 }
 
 func FullName() string {

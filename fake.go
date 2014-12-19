@@ -13,7 +13,7 @@ var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 var (
 	ErrInsufficientParams = fmt.Errorf("Insufficient params to lookup the samples")
 	ErrNoLanguageFn       = func(lang string) error { return fmt.Errorf("The language passed (%s) is not available", lang) }
-	ErrNoSamplesFn        = func(lang string) error { return fmt.Errorf("No samples for language: %s", lang) }
+	ErrNoSamplesFn        = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
 
 // Config used to congigure faker
@@ -28,6 +28,8 @@ type Faker interface {
 	FirstName() (string, error)
 	LastName() (string, error)
 	FullName() (string, error)
+	FullNameWithPrefix() (string, error)
+	FullNameWithSuffix() (string, error)
 }
 
 // cat/subcat/lang/samples
