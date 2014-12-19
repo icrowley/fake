@@ -1,25 +1,25 @@
-package faker_test
+package fake_test
 
 import (
-	"github.com/icrowley/faker"
+	"github.com/icrowley/fake"
 
 	"testing"
 )
 
 func TestCheckLang(t *testing.T) {
-	_, err := faker.NewFaker(faker.Config{Lang: "ru"})
+	_, err := fake.NewFaker(fake.Config{Lang: "ru"})
 	if err == nil {
 		t.Error("NewFaker with nonexistent lang should return error")
 	}
 
-	_, err = faker.NewFaker(faker.Config{})
+	_, err = fake.NewFaker(fake.Config{})
 	if err != nil {
 		t.Error("NewFaker without lang should use en")
 	}
 }
 
 func TestFakerEn(t *testing.T) {
-	f, err := faker.NewFaker(faker.Config{Lang: "en"})
+	f, err := fake.NewFaker(fake.Config{Lang: "en"})
 	name, err := f.FullName()
 	if err != nil {
 		t.Error(err)
@@ -30,7 +30,7 @@ func TestFakerEn(t *testing.T) {
 }
 
 func TestFakerCaWithoutCallback(t *testing.T) {
-	f, _ := faker.NewFaker(faker.Config{Lang: "ca"})
+	f, _ := fake.NewFaker(fake.Config{Lang: "ca"})
 	name, err := f.FullName()
 	if err == nil {
 		t.Error("Faker call with no samples file should produce an error")
@@ -41,7 +41,7 @@ func TestFakerCaWithoutCallback(t *testing.T) {
 }
 
 func TestFakerCaWithCallback(t *testing.T) {
-	f, _ := faker.NewFaker(faker.Config{Lang: "ca", EnFallback: true})
+	f, _ := fake.NewFaker(fake.Config{Lang: "ca", EnFallback: true})
 	name, err := f.FullName()
 	if err != nil {
 		t.Error("Faker call with no samples file with callback should not produce an error")
@@ -52,15 +52,15 @@ func TestFakerCaWithCallback(t *testing.T) {
 }
 
 func TestDefaults(t *testing.T) {
-	name := faker.FullName()
+	name := fake.FullName()
 	if name == "" {
 		t.Error("Default faker call should return a string")
 	}
 }
 
 func TestDefaultCa(t *testing.T) {
-	faker.SetLang("ca")
-	name := faker.FullName()
+	fake.SetLang("ca")
+	name := fake.FullName()
 	if name != "" {
 		t.Errorf("Default faker call should return blank string with no existing samples, but returned %s\n", name)
 	}

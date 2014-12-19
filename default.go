@@ -1,4 +1,4 @@
-package faker
+package fake
 
 var defaultFaker = &faker{lang: "en", samples: make(samplesMap)}
 
