@@ -41,13 +41,39 @@ type faker struct {
 }
 
 // NewFaker returns new faker object
-func NewFaker(config *Config) Faker {
+func NewFaker(config Config) (Faker, error) {
+	if config.Lang == "" {
+		config.Lang = "en"
+	}
+
+	err := checkLang(config)
+	if err != nil {
+		return nil, err
+	}
+
 	return &faker{
 		lang:         config.Lang,
 		useLocalData: config.UseLocalData,
 		enFallback:   config.EnFallback,
 		samples:      make(samplesMap),
+	}, nil
+}
+
+func checkLang(config Config) error {
+	availLangs := []string{"en", "br", "ca", "da", "de", "fi", "fr", "mx", "nl", "se", "sn", "uk", "us", "ja", "ar", "cn", "cs",
+		"ga", "it", "kr", "nb", "ph", "th", "vn"}
+
+	found := false
+	for _, lang := range availLangs {
+		if config.Lang == lang {
+			found = true
+			break
+		}
 	}
+	if !found {
+		return fmt.Errorf("The language passed (%s) is not available", config.Lang)
+	}
+	return nil
 }
 
 func (f *faker) lookup(params ...string) (string, error) {
@@ -81,7 +107,6 @@ func (f *faker) lookup(params ...string) (string, error) {
 }
 
 func (f *faker) readSamplesFile(cat, subcat, lang string) ([]byte, error) {
-	fmt.Println("Here")
 	var suffix string
 	if lang != "en" {
 		suffix = "_" + lang
