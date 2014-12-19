@@ -10,12 +10,6 @@ import (
 
 var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 
-type noSamplesError string
-
-func (str noSamplesError) Error() string {
-	return fmt.Sprintf("No samples for language: %s", str)
-}
-
 // Config used to congigure faker
 type Config struct {
 	Lang         string
@@ -117,7 +111,7 @@ func (f *faker) readSamplesFile(cat, subcat, lang string) ([]byte, error) {
 		if f.lang != "en" && f.enFallback {
 			return f.readSamplesFile(cat, subcat, "en")
 		}
-		return nil, noSamplesError(f.lang)
+		return nil, fmt.Errorf("No samples for language: %s", lang)
 	}
 	defer file.Close()
 
