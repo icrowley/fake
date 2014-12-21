@@ -20,10 +20,7 @@ func TestSetLang(t *testing.T) {
 
 func TestFakerEn(t *testing.T) {
 	fake.SetLang("en")
-	name, err := fake.FullName()
-	if err != nil {
-		t.Error(err.Error())
-	}
+	name := fake.FullName()
 	if name == "" {
 		t.Error("Name should not be blank")
 	}
@@ -31,10 +28,7 @@ func TestFakerEn(t *testing.T) {
 
 func TestFakerCaWithoutCallback(t *testing.T) {
 	fake.SetLang("ca")
-	name, err := fake.FullName()
-	if err == nil {
-		t.Error("Fake call with no samples file should produce an error")
-	}
+	name := fake.FullName()
 	if name != "" {
 		t.Error("Fake call with no samples should return blank string")
 	}
@@ -43,10 +37,7 @@ func TestFakerCaWithoutCallback(t *testing.T) {
 func TestFakerCaWithCallback(t *testing.T) {
 	fake.SetLang("ca")
 	fake.EnFallback(true)
-	name, err := fake.FullName()
-	if err != nil {
-		t.Error("Fake call with no samples file with callback should not produce an error")
-	}
+	name := fake.FullName()
 	if name == "" {
 		t.Error("Fake call with no samples with callback should not return blank string")
 	}

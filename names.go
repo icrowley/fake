@@ -10,97 +10,79 @@ func randGender() string {
 	return g
 }
 
-func firstName(gender string) (string, error) {
+func firstName(gender string) string {
 	return lookup("name", gender+"_first_names", lang)
 }
 
-func MaleFirstName() (string, error) {
+func MaleFirstName() string {
 	return firstName("male")
 }
 
-func FemaleFirstName() (string, error) {
+func FemaleFirstName() string {
 	return firstName("female")
 }
 
-func FirstName() (string, error) {
+func FirstName() string {
 	return lookup("name", randGender()+"_first_names", lang)
 }
 
-func lastName(gender string) (string, error) {
+func lastName(gender string) string {
 	return lookup("name", gender+"_last_names", lang)
 }
 
-func MaleLastName() (string, error) {
+func MaleLastName() string {
 	return lastName("male")
 }
 
-func FemaleLastName() (string, error) {
+func FemaleLastName() string {
 	return lastName("female")
 }
 
-func LastName() (string, error) {
+func LastName() string {
 	return lookup("name", randGender()+"_first_names", lang)
 }
 
-func fullNameWithPrefix(gender string) (string, error) {
-	prefix, err := lookup("name", gender+"_prefixes", lang)
-	if err != nil {
-		return "", err
+func fullNameWithPrefix(gender string) string {
+	prefix := lookup("name", gender+"_prefixes", lang)
+	fn := firstName(gender)
+	ln := lastName(gender)
+	if fn != "" && ln != "" && prefix != "" {
+		return fmt.Sprintf("%s %s %s", prefix, fn, ln)
 	}
-
-	fn, err := firstName(gender)
-	if err != nil {
-		return "", err
-	}
-
-	ln, err := lastName(gender)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("%s %s %s", prefix, fn, ln), nil
+	return ""
 }
 
-func MaleFullNameWithPrefix() (string, error) {
+func MaleFullNameWithPrefix() string {
 	return fullNameWithPrefix("male")
 }
 
-func FemaleFullNameWithPrefix() (string, error) {
+func FemaleFullNameWithPrefix() string {
 	return fullNameWithPrefix("female")
 }
 
-func fullNameWithSuffix(gender string) (string, error) {
-	suffix, err := lookup("name", gender+"_suffixes", lang)
-	if err != nil {
-		return "", err
+func fullNameWithSuffix(gender string) string {
+	suffix := lookup("name", gender+"_suffixes", lang)
+	fn := firstName(gender)
+	ln := lastName(gender)
+	if fn != "" && ln != "" && suffix != "" {
+		return fmt.Sprintf("%s %s %s", fn, ln, suffix)
 	}
-
-	fn, err := firstName(gender)
-	if err != nil {
-		return "", err
-	}
-
-	ln, err := lastName(gender)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("%s %s %s", fn, ln, suffix), nil
+	return ""
 }
 
-func MaleFullNameWithSuffix() (string, error) {
+func MaleFullNameWithSuffix() string {
 	return fullNameWithPrefix("male")
 }
 
-func FemaleFullNameWithSuffix() (string, error) {
+func FemaleFullNameWithSuffix() string {
 	return fullNameWithPrefix("female")
 }
 
-func FullNameWithSuffix() (string, error) {
+func FullNameWithSuffix() string {
 	return fullNameWithPrefix(randGender())
 }
 
-func fullName(gender string) (string, error) {
+func fullName(gender string) string {
 	n := r.Intn(10)
 	switch n {
 	case 0:
@@ -108,27 +90,23 @@ func fullName(gender string) (string, error) {
 	case 1:
 		return fullNameWithSuffix(gender)
 	default:
-		fn, err := firstName(gender)
-		if err != nil {
-			return "", err
+		fn := firstName(gender)
+		ln := lastName(gender)
+		if fn != "" && ln != "" {
+			return fmt.Sprintf("%s %s", fn, ln)
 		}
-
-		ln, err := lastName(gender)
-		if err != nil {
-			return "", err
-		}
-		return fmt.Sprintf("%s %s", fn, ln), nil
+		return ""
 	}
 }
 
-func MaleFullName() (string, error) {
+func MaleFullName() string {
 	return fullName("male")
 }
 
-func FemaleFullName() (string, error) {
+func FemaleFullName() string {
 	return fullName("female")
 }
 
-func FullName() (string, error) {
+func FullName() string {
 	return fullName(randGender())
 }

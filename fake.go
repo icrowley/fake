@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// cat/subcat/lang/samples
 type samplesTree map[string]map[string]map[string][]string
 
 var samplesCache = make(samplesTree)
@@ -48,26 +49,34 @@ func EnFallback(flag bool) {
 	enFallback = flag
 }
 
-func lookup(cat, subcat, lang string) (string, error) {
-	var samples []string
-	var err error
-
-	_, ok := samplesCache[cat]
-	if ok {
-		samples, ok = samplesCache[cat][subcat][lang]
+func (st samplesTree) hasKeyPath(cat, subcat, lang string) bool {
+	if _, ok := st[cat]; ok {
+		if _, ok = st[cat][subcat]; ok {
+			if _, ok = st[cat][subcat][lang]; ok {
+				return true
+			}
+		}
 	}
+	return false
+}
 
-	if !ok {
+func lookup(cat, subcat, lang string) string {
+	var samples []string
+
+	if samplesCache.hasKeyPath(cat, subcat, lang) {
+		samples = samplesCache[cat][subcat][lang]
+	} else {
+		var err error
 		samples, err = populateSamples(cat, subcat, lang)
 		if err != nil {
 			if err.Error() == ErrNoSamplesFn(lang).Error() && lang != "en" && enFallback {
 				return lookup(cat, subcat, "en")
 			}
-			return "", err
+			return ""
 		}
 	}
 
-	return samples[r.Intn(len(samples))], nil
+	return samples[r.Intn(len(samples))]
 }
 
 func populateSamples(cat, subcat, lang string) ([]string, error) {
