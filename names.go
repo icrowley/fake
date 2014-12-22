@@ -1,7 +1,5 @@
 package fake
 
-import "fmt"
-
 func randGender() string {
 	g := "male"
 	if r.Intn(2) == 0 {
@@ -11,7 +9,7 @@ func randGender() string {
 }
 
 func firstName(gender string) string {
-	return lookup("name", gender+"_first_names", lang)
+	return lookup("name", gender+"_first_names", lang, false)
 }
 
 func MaleFirstName() string {
@@ -23,11 +21,11 @@ func FemaleFirstName() string {
 }
 
 func FirstName() string {
-	return lookup("name", randGender()+"_first_names", lang)
+	return lookup("name", randGender()+"_first_names", lang, false)
 }
 
 func lastName(gender string) string {
-	return lookup("name", gender+"_last_names", lang)
+	return lookup("name", gender+"_last_names", lang, false)
 }
 
 func MaleLastName() string {
@@ -39,17 +37,35 @@ func FemaleLastName() string {
 }
 
 func LastName() string {
-	return lookup("name", randGender()+"_first_names", lang)
+	return lookup("name", randGender()+"_first_names", lang, false)
+}
+
+func patronymic(gender string) string {
+	return lookup("name", gender+"_patronymics", lang, false)
+}
+
+func MalePatronymic() string {
+	return patronymic("male")
+}
+
+func FemalePatronymic() string {
+	return patronymic("female")
+}
+
+func Patronymic() string {
+	return patronymic(randGender())
+}
+
+func prefix(gender string) string {
+	return lookup("name", gender+"_prefixes", lang, false)
+}
+
+func suffix(gender string) string {
+	return lookup("name", gender+"_suffixes", lang, false)
 }
 
 func fullNameWithPrefix(gender string) string {
-	prefix := lookup("name", gender+"_prefixes", lang)
-	fn := firstName(gender)
-	ln := lastName(gender)
-	if fn != "" && ln != "" && prefix != "" {
-		return fmt.Sprintf("%s %s %s", prefix, fn, ln)
-	}
-	return ""
+	return join(prefix(gender), firstName(gender), lastName(gender))
 }
 
 func MaleFullNameWithPrefix() string {
@@ -61,13 +77,7 @@ func FemaleFullNameWithPrefix() string {
 }
 
 func fullNameWithSuffix(gender string) string {
-	suffix := lookup("name", gender+"_suffixes", lang)
-	fn := firstName(gender)
-	ln := lastName(gender)
-	if fn != "" && ln != "" && suffix != "" {
-		return fmt.Sprintf("%s %s %s", fn, ln, suffix)
-	}
-	return ""
+	return join(firstName(gender), lastName(gender), suffix(gender))
 }
 
 func MaleFullNameWithSuffix() string {
@@ -83,19 +93,13 @@ func FullNameWithSuffix() string {
 }
 
 func fullName(gender string) string {
-	n := r.Intn(10)
-	switch n {
+	switch r.Intn(10) {
 	case 0:
 		return fullNameWithPrefix(gender)
 	case 1:
 		return fullNameWithSuffix(gender)
 	default:
-		fn := firstName(gender)
-		ln := lastName(gender)
-		if fn != "" && ln != "" {
-			return fmt.Sprintf("%s %s", fn, ln)
-		}
-		return ""
+		return join(firstName(gender), lastName(gender))
 	}
 }
 

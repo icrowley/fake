@@ -60,7 +60,17 @@ func (st samplesTree) hasKeyPath(cat, subcat, lang string) bool {
 	return false
 }
 
-func lookup(cat, subcat, lang string) string {
+func join(parts ...string) string {
+	var filtered []string
+	for _, part := range parts {
+		if part != "" {
+			filtered = append(filtered, part)
+		}
+	}
+	return strings.Join(filtered, " ")
+}
+
+func lookup(cat, subcat, lang string, callback bool) string {
 	var samples []string
 
 	if samplesCache.hasKeyPath(cat, subcat, lang) {
@@ -69,8 +79,8 @@ func lookup(cat, subcat, lang string) string {
 		var err error
 		samples, err = populateSamples(cat, subcat, lang)
 		if err != nil {
-			if err.Error() == ErrNoSamplesFn(lang).Error() && lang != "en" && enFallback {
-				return lookup(cat, subcat, "en")
+			if lang != "en" && callback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
+				return lookup(cat, subcat, "en", false)
 			}
 			return ""
 		}
