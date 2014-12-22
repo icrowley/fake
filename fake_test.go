@@ -42,11 +42,3 @@ func TestFakerCaWithCallback(t *testing.T) {
 		t.Error("Fake call for name with no samples with callback should not return blank string")
 	}
 }
-
-func TestGenderAbbrev(t *testing.T) {
-	fake.SetLang("en")
-	g := fake.GenderAbbrev()
-	if g != "m" && g != "f" {
-		t.Error(`GenderAbbrev must return "m" or "f" string`)
-	}
-}

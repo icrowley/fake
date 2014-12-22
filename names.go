@@ -80,6 +80,10 @@ func FemaleFullNameWithPrefix() string {
 	return fullNameWithPrefix("female")
 }
 
+func FullNameWithPrefix() string {
+	return fullNameWithPrefix(randGender())
+}
+
 func fullNameWithSuffix(gender string) string {
 	return join(firstName(gender), lastName(gender), suffix(gender))
 }

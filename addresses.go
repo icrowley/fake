@@ -52,9 +52,9 @@ func streetSuffix() string {
 }
 
 func Zip() string {
-	return generate(lang, "zip", true)
+	return generate(lang, "zips", true)
 }
 
 func Phone() string {
-	return generate(lang, "phone", true)
+	return generate(lang, "phones", true)
 }

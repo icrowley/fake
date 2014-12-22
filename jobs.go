@@ -10,7 +10,7 @@ func JobTitle() string {
 }
 
 func jobTitleSuffix() string {
-	return lookup(lang, "jobs", false)
+	return lookup(lang, "jobs_suffixes", false)
 }
 
 func Industry() string {
