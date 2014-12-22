@@ -1,5 +1,7 @@
 package fake
 
+import "strconv"
+
 func Continent() string {
 	return lookup("addresses", "continents", lang, true)
 }
@@ -39,6 +41,10 @@ func StateAbbrev() string {
 func Street() string {
 	street := lookup("addresses", "streets", lang, true)
 	return join(street, streetSuffix())
+}
+
+func StreetAddress() string {
+	return join(Street(), strconv.Itoa(r.Intn(100)))
 }
 
 func streetSuffix() string {
