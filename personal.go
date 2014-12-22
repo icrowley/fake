@@ -1,17 +1,21 @@
 package fake
 
+import (
+	"strings"
+)
+
 func Gender() string {
-	return lookup("personal", "genders", lang, true)
+	return lookup(lang, "genders", true)
 }
 
 func GenderAbbrev() string {
 	g := Gender()
 	if g != "" {
-		return string(g[0])
+		return strings.ToLower(string(g[0]))
 	}
 	return ""
 }
 
 func Language() string {
-	return lookup("personal", "languages", lang, true)
+	return lookup(lang, "languages", true)
 }

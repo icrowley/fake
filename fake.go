@@ -10,7 +10,7 @@ import (
 )
 
 // cat/subcat/lang/samples
-type samplesTree map[string]map[string]map[string][]string
+type samplesTree map[string]map[string][]string
 
 var samplesCache = make(samplesTree)
 var r = rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -50,12 +50,10 @@ func EnFallback(flag bool) {
 	enFallback = flag
 }
 
-func (st samplesTree) hasKeyPath(cat, subcat, lang string) bool {
-	if _, ok := st[cat]; ok {
-		if _, ok = st[cat][subcat]; ok {
-			if _, ok = st[cat][subcat][lang]; ok {
-				return true
-			}
+func (st samplesTree) hasKeyPath(lang, cat string) bool {
+	if _, ok := st[lang]; ok {
+		if _, ok = st[lang][cat]; ok {
+			return true
 		}
 	}
 	return false
@@ -71,8 +69,8 @@ func join(parts ...string) string {
 	return strings.Join(filtered, " ")
 }
 
-func generate(cat, subcat, lang string, fallback bool) string {
-	format := lookup(cat, subcat+"_format", lang, fallback)
+func generate(lag, cat string, fallback bool) string {
+	format := lookup(lang, cat+"_format", fallback)
 	var result string
 	for _, ru := range format {
 		if ru != '#' {
@@ -84,17 +82,17 @@ func generate(cat, subcat, lang string, fallback bool) string {
 	return result
 }
 
-func lookup(cat, subcat, lang string, fallback bool) string {
+func lookup(lang, cat string, fallback bool) string {
 	var samples []string
 
-	if samplesCache.hasKeyPath(cat, subcat, lang) {
-		samples = samplesCache[cat][subcat][lang]
+	if samplesCache.hasKeyPath(lang, cat) {
+		samples = samplesCache[lang][cat]
 	} else {
 		var err error
-		samples, err = populateSamples(cat, subcat, lang)
+		samples, err = populateSamples(lang, cat)
 		if err != nil {
 			if lang != "en" && fallback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
-				return lookup(cat, subcat, "en", false)
+				return lookup("en", cat, false)
 			}
 			return ""
 		}
@@ -103,28 +101,24 @@ func lookup(cat, subcat, lang string, fallback bool) string {
 	return samples[r.Intn(len(samples))]
 }
 
-func populateSamples(cat, subcat, lang string) ([]string, error) {
-	data, err := readFile(cat, subcat, lang)
+func populateSamples(lang, cat string) ([]string, error) {
+	data, err := readFile(lang, cat)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, ok := samplesCache[cat]; !ok {
-		samplesCache[cat] = make(map[string]map[string][]string)
-	}
-
-	if _, ok := samplesCache[cat][subcat]; !ok {
-		samplesCache[cat][subcat] = make(map[string][]string)
+	if _, ok := samplesCache[lang]; !ok {
+		samplesCache[lang] = make(map[string][]string)
 	}
 
 	samples := strings.Split(strings.TrimSpace(string(data)), "\n")
 
-	samplesCache[cat][subcat][lang] = samples
+	samplesCache[lang][cat] = samples
 	return samples, nil
 }
 
-func readFile(cat, subcat, lang string) ([]byte, error) {
-	fullpath := fmt.Sprintf("/data/%s_%s/%s", cat, lang, subcat)
+func readFile(lang, cat string) ([]byte, error) {
+	fullpath := fmt.Sprintf("/data/%s/%s", lang, cat)
 	file, err := FS(useLocalData).Open(fullpath)
 	if err != nil {
 		return nil, ErrNoSamplesFn(lang)

@@ -38,7 +38,7 @@ func SimplePassword() string {
 }
 
 func Color() string {
-	return lookup("general", "colors", lang, true)
+	return lookup(lang, "colors", true)
 }
 
 func hexDigitsStr(n int) string {

@@ -9,11 +9,11 @@ func randGender() string {
 }
 
 func NickName() string {
-	return lookup("name", "nicknames", lang, true)
+	return lookup(lang, "nicknames", true)
 }
 
 func firstName(gender string) string {
-	return lookup("name", gender+"_first_names", lang, true)
+	return lookup(lang, gender+"_first_names", true)
 }
 
 func MaleFirstName() string {
@@ -29,7 +29,7 @@ func FirstName() string {
 }
 
 func lastName(gender string) string {
-	return lookup("name", gender+"_last_names", lang, true)
+	return lookup(lang, gender+"_last_names", true)
 }
 
 func MaleLastName() string {
@@ -45,7 +45,7 @@ func LastName() string {
 }
 
 func patronymic(gender string) string {
-	return lookup("name", gender+"_patronymics", lang, false)
+	return lookup(lang, gender+"_patronymics", false)
 }
 
 func MalePatronymic() string {
@@ -61,11 +61,11 @@ func Patronymic() string {
 }
 
 func prefix(gender string) string {
-	return lookup("name", gender+"_prefixes", lang, false)
+	return lookup(lang, gender+"_prefixes", false)
 }
 
 func suffix(gender string) string {
-	return lookup("name", gender+"_suffixes", lang, false)
+	return lookup(lang, gender+"_suffixes", false)
 }
 
 func fullNameWithPrefix(gender string) string {

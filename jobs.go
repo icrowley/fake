@@ -1,18 +1,18 @@
 package fake
 
 func Company() string {
-	return lookup("job", "companies", lang, true)
+	return lookup(lang, "companies", true)
 }
 
 func JobTitle() string {
-	job := lookup("job", "jobs", lang, true)
+	job := lookup(lang, "jobs", true)
 	return join(job, jobTitleSuffix())
 }
 
 func jobTitleSuffix() string {
-	return lookup("job", "jobs", lang, false)
+	return lookup(lang, "jobs", false)
 }
 
 func Industry() string {
-	return lookup("job", "industries", lang, true)
+	return lookup(lang, "industries", true)
 }

@@ -3,15 +3,15 @@ package fake
 import "strconv"
 
 func Continent() string {
-	return lookup("addresses", "continents", lang, true)
+	return lookup(lang, "continents", true)
 }
 
 func Country() string {
-	return lookup("addresses", "countries", lang, true)
+	return lookup(lang, "countries", true)
 }
 
 func City() string {
-	city := lookup("addresses", "cities", lang, true)
+	city := lookup(lang, "cities", true)
 	switch r.Intn(5) {
 	case 0:
 		return join(cityPrefix(), city)
@@ -23,23 +23,23 @@ func City() string {
 }
 
 func cityPrefix() string {
-	return lookup("addresses", "city_prefixes", lang, false)
+	return lookup(lang, "city_prefixes", false)
 }
 
 func citySuffix() string {
-	return lookup("addresses", "city_suffixes", lang, false)
+	return lookup(lang, "city_suffixes", false)
 }
 
 func State() string {
-	return lookup("addresses", "states", lang, false)
+	return lookup(lang, "states", false)
 }
 
 func StateAbbrev() string {
-	return lookup("addresses", "state_abbrevs", lang, false)
+	return lookup(lang, "state_abbrevs", false)
 }
 
 func Street() string {
-	street := lookup("addresses", "streets", lang, true)
+	street := lookup(lang, "streets", true)
 	return join(street, streetSuffix())
 }
 
@@ -48,13 +48,13 @@ func StreetAddress() string {
 }
 
 func streetSuffix() string {
-	return lookup("addresses", "street_suffixes", lang, true)
+	return lookup(lang, "street_suffixes", true)
 }
 
 func Zip() string {
-	return generate("addresses", "zip", lang, true)
+	return generate(lang, "zip", true)
 }
 
 func Phone() string {
-	return generate("addresses", "phone", lang, true)
+	return generate(lang, "phone", true)
 }
