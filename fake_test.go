@@ -38,7 +38,7 @@ func TestFakerCaWithCallback(t *testing.T) {
 	fake.SetLang("ca")
 	fake.EnFallback(true)
 	name := fake.FullName()
-	if name != "" {
-		t.Error("Fake call for name with no samples with callback should return blank string")
+	if name == "" {
+		t.Error("Fake call for name with no samples with callback should not return blank string")
 	}
 }

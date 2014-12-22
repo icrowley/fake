@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -70,7 +71,20 @@ func join(parts ...string) string {
 	return strings.Join(filtered, " ")
 }
 
-func lookup(cat, subcat, lang string, callback bool) string {
+func generate(cat, subcat, lang string, fallback bool) string {
+	format := lookup(cat, subcat+"_format", lang, fallback)
+	var result string
+	for _, ru := range format {
+		if ru != '#' {
+			result += string(ru)
+		} else {
+			result += strconv.Itoa(r.Intn(10))
+		}
+	}
+	return result
+}
+
+func lookup(cat, subcat, lang string, fallback bool) string {
 	var samples []string
 
 	if samplesCache.hasKeyPath(cat, subcat, lang) {
@@ -79,7 +93,7 @@ func lookup(cat, subcat, lang string, callback bool) string {
 		var err error
 		samples, err = populateSamples(cat, subcat, lang)
 		if err != nil {
-			if lang != "en" && callback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
+			if lang != "en" && fallback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
 				return lookup(cat, subcat, "en", false)
 			}
 			return ""
@@ -90,7 +104,7 @@ func lookup(cat, subcat, lang string, callback bool) string {
 }
 
 func populateSamples(cat, subcat, lang string) ([]string, error) {
-	data, err := readSamplesFile(cat, subcat, lang)
+	data, err := readFile(cat, subcat, lang)
 	if err != nil {
 		return nil, err
 	}
@@ -103,13 +117,13 @@ func populateSamples(cat, subcat, lang string) ([]string, error) {
 		samplesCache[cat][subcat] = make(map[string][]string)
 	}
 
-	samples := strings.Split(string(data), "\n")
+	samples := strings.Split(strings.TrimSpace(string(data)), "\n")
 
 	samplesCache[cat][subcat][lang] = samples
 	return samples, nil
 }
 
-func readSamplesFile(cat, subcat, lang string) ([]byte, error) {
+func readFile(cat, subcat, lang string) ([]byte, error) {
 	fullpath := fmt.Sprintf("/data/%s_%s/%s", cat, lang, subcat)
 	file, err := FS(useLocalData).Open(fullpath)
 	if err != nil {
