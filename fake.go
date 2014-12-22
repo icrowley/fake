@@ -15,7 +15,7 @@ type samplesTree map[string]map[string][]string
 var samplesCache = make(samplesTree)
 var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 var lang = "en"
-var useLocalData = false
+var useExternalData = false
 var enFallback = false
 
 var (
@@ -42,8 +42,8 @@ func SetLang(newLang string) error {
 	return nil
 }
 
-func UseLocalData(flag bool) {
-	useLocalData = flag
+func UseExternalData(flag bool) {
+	useExternalData = flag
 }
 
 func EnFallback(flag bool) {
@@ -119,7 +119,7 @@ func populateSamples(lang, cat string) ([]string, error) {
 
 func readFile(lang, cat string) ([]byte, error) {
 	fullpath := fmt.Sprintf("/data/%s/%s", lang, cat)
-	file, err := FS(useLocalData).Open(fullpath)
+	file, err := FS(useExternalData).Open(fullpath)
 	if err != nil {
 		return nil, ErrNoSamplesFn(lang)
 	}

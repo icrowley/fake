@@ -9,12 +9,7 @@ import (
 func TestNames(t *testing.T) {
 	fake.SetLang("en")
 
-	v := fake.NickName()
-	if v == "" {
-		t.Error("Nickname failed")
-	}
-
-	v = fake.MaleFirstName()
+	v := fake.MaleFirstName()
 	if v == "" {
 		t.Error("MaleFirstName failed")
 	}

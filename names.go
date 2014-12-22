@@ -8,10 +8,6 @@ func randGender() string {
 	return g
 }
 
-func NickName() string {
-	return lookup(lang, "nicknames", true)
-}
-
 func firstName(gender string) string {
 	return lookup(lang, gender+"_first_names", true)
 }
