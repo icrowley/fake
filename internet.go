@@ -25,6 +25,10 @@ func EmailSubject() string {
 	return "Subject"
 }
 
+func EmailBody() string {
+	return "Body"
+}
+
 func DomainZone() string {
 	return lookup(lang, "domain_zones", true)
 }

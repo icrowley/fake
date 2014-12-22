@@ -34,6 +34,11 @@ func TestInternet(t *testing.T) {
 		t.Error("EmailSubject failed")
 	}
 
+	v = fake.EmailBody()
+	if v == "" {
+		t.Error("EmailBody failed")
+	}
+
 	v = fake.DomainZone()
 	if v == "" {
 		t.Error("DomainZone failed")
