@@ -7,55 +7,58 @@ import (
 )
 
 func TestGeo(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	f := fake.Latitute()
-	if f == 0 {
-		t.Error("Latitude failed")
-	}
+		f := fake.Latitute()
+		if f == 0 {
+			t.Errorf("Latitude failed with lang %s", lang)
+		}
 
-	i := fake.LatitudeDegress()
-	if i < -180 || i > 180 {
-		t.Error("LatitudeDegress failed")
-	}
+		i := fake.LatitudeDegress()
+		if i < -180 || i > 180 {
+			t.Errorf("LatitudeDegress failed with lang %s", lang)
+		}
 
-	i = fake.LatitudeMinutes()
-	if i < 0 || i >= 60 {
-		t.Error("LatitudeMinutes failed")
-	}
+		i = fake.LatitudeMinutes()
+		if i < 0 || i >= 60 {
+			t.Errorf("LatitudeMinutes failed with lang %s", lang)
+		}
 
-	i = fake.LatitudeSeconds()
-	if i < 0 || i >= 60 {
-		t.Error("LatitudeSeconds failed")
-	}
+		i = fake.LatitudeSeconds()
+		if i < 0 || i >= 60 {
+			t.Errorf("LatitudeSeconds failed with lang %s", lang)
+		}
 
-	s := fake.LatitudeDirection()
-	if s != "N" && s != "S" {
-		t.Error("LatitudeDirection failed")
-	}
+		s := fake.LatitudeDirection()
+		if s != "N" && s != "S" {
+			t.Errorf("LatitudeDirection failed with lang %s", lang)
+		}
 
-	f = fake.Longitude()
-	if f == 0 {
-		t.Error("Longitude failed")
-	}
+		f = fake.Longitude()
+		if f == 0 {
+			t.Errorf("Longitude failed with lang %s", lang)
+		}
 
-	i = fake.LongitudeDegrees()
-	if i < -180 || i > 180 {
-		t.Error("LongitudeDegrees failed")
-	}
+		i = fake.LongitudeDegrees()
+		if i < -180 || i > 180 {
+			t.Errorf("LongitudeDegrees failed with lang %s", lang)
+		}
 
-	i = fake.LongitudeMinutes()
-	if i < 0 || i >= 60 {
-		t.Error("LongitudeMinutes failed")
-	}
+		i = fake.LongitudeMinutes()
+		if i < 0 || i >= 60 {
+			t.Errorf("LongitudeMinutes failed with lang %s", lang)
+		}
 
-	i = fake.LongitudeSeconds()
-	if i < 0 || i >= 60 {
-		t.Error("LongitudeSeconds failed")
-	}
+		i = fake.LongitudeSeconds()
+		if i < 0 || i >= 60 {
+			t.Errorf("LongitudeSeconds failed with lang %s", lang)
+		}
 
-	s = fake.LongitudeDirection()
-	if s != "W" && s != "E" {
-		t.Error("LongitudeDirection failed")
+		s = fake.LongitudeDirection()
+		if s != "W" && s != "E" {
+			t.Errorf("LongitudeDirection failed with lang %s", lang)
+		}
 	}
 }

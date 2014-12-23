@@ -7,45 +7,48 @@ import (
 )
 
 func TestInternet(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.UserName()
-	if v == "" {
-		t.Error("UserName failed")
-	}
+		v := fake.UserName()
+		if v == "" {
+			t.Errorf("UserName failed with lang %s", lang)
+		}
 
-	v = fake.TopLevelDomain()
-	if v == "" {
-		t.Error("TopLevelDomain failed")
-	}
+		v = fake.TopLevelDomain()
+		if v == "" {
+			t.Errorf("TopLevelDomain failed with lang %s", lang)
+		}
 
-	v = fake.DomainName()
-	if v == "" {
-		t.Error("DomainName failed")
-	}
+		v = fake.DomainName()
+		if v == "" {
+			t.Errorf("DomainName failed with lang %s", lang)
+		}
 
-	v = fake.EmailAddress()
-	if v == "" {
-		t.Error("EmailAddress failed")
-	}
+		v = fake.EmailAddress()
+		if v == "" {
+			t.Errorf("EmailAddress failed with lang %s", lang)
+		}
 
-	v = fake.EmailSubject()
-	if v == "" {
-		t.Error("EmailSubject failed")
-	}
+		v = fake.EmailSubject()
+		if v == "" {
+			t.Errorf("EmailSubject failed with lang %s", lang)
+		}
 
-	v = fake.EmailBody()
-	if v == "" {
-		t.Error("EmailBody failed")
-	}
+		v = fake.EmailBody()
+		if v == "" {
+			t.Errorf("EmailBody failed with lang %s", lang)
+		}
 
-	v = fake.DomainZone()
-	if v == "" {
-		t.Error("DomainZone failed")
-	}
+		v = fake.DomainZone()
+		if v == "" {
+			t.Errorf("DomainZone failed with lang %s", lang)
+		}
 
-	v = fake.IPv4()
-	if v == "" {
-		t.Error("IPv4 failed")
+		v = fake.IPv4()
+		if v == "" {
+			t.Errorf("IPv4 failed with lang %s", lang)
+		}
 	}
 }

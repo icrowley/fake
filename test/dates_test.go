@@ -8,41 +8,44 @@ import (
 )
 
 func TestDates(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.WeekDay()
-	if v == "" {
-		t.Error("WeekDay failed")
-	}
+		v := fake.WeekDay()
+		if v == "" {
+			t.Errorf("WeekDay failed with lang %s", lang)
+		}
 
-	v = fake.WeekDayShort()
-	if v == "" {
-		t.Error("WeekDayShort failed")
-	}
+		v = fake.WeekDayShort()
+		if v == "" {
+			t.Errorf("WeekDayShort failed with lang %s", lang)
+		}
 
-	n := fake.WeekdayNum()
-	if n < 0 || n > 7 {
-		t.Error("WeekdayNum failed")
-	}
+		n := fake.WeekdayNum()
+		if n < 0 || n > 7 {
+			t.Errorf("WeekdayNum failed with lang %s", lang)
+		}
 
-	v = fake.Month()
-	if v == "" {
-		t.Error("Month failed")
-	}
+		v = fake.Month()
+		if v == "" {
+			t.Errorf("Month failed with lang %s", lang)
+		}
 
-	v = fake.MonthShort()
-	if v == "" {
-		t.Error("MonthShort failed")
-	}
+		v = fake.MonthShort()
+		if v == "" {
+			t.Errorf("MonthShort failed with lang %s", lang)
+		}
 
-	n = fake.MonthNum()
-	if n < 0 || n > 31 {
-		t.Error("MonthNum failed")
-	}
+		n = fake.MonthNum()
+		if n < 0 || n > 31 {
+			t.Errorf("MonthNum failed with lang %s", lang)
+		}
 
-	n = fake.Year(50, 20)
-	year := time.Now().Year()
-	if n < year-50 || n > year+20 {
-		t.Error("Year failed")
+		n = fake.Year(50, 20)
+		year := time.Now().Year()
+		if n < year-50 || n > year+20 {
+			t.Errorf("Year failed with lang %s", lang)
+		}
 	}
 }

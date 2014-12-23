@@ -7,15 +7,18 @@ import (
 )
 
 func TestCurrencies(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.Currency()
-	if v == "" {
-		t.Error("Currency failed")
-	}
+		v := fake.Currency()
+		if v == "" {
+			t.Errorf("Currency failed with lang %s", lang)
+		}
 
-	v = fake.CurrencyCode()
-	if v == "" {
-		t.Error("CurrencyCode failed")
+		v = fake.CurrencyCode()
+		if v == "" {
+			t.Errorf("CurrencyCode failed with lang %s", lang)
+		}
 	}
 }

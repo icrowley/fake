@@ -7,20 +7,23 @@ import (
 )
 
 func TestCreditCards(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.CreditCardType()
-	if v == "" {
-		t.Error("CreditCardType failed")
-	}
+		v := fake.CreditCardType()
+		if v == "" {
+			t.Errorf("CreditCardType failed with lang %s", lang)
+		}
 
-	v = fake.CreditCardNum("")
-	if v == "" {
-		t.Error("CreditCardNum failed")
-	}
+		v = fake.CreditCardNum("")
+		if v == "" {
+			t.Errorf("CreditCardNum failed with lang %s", lang)
+		}
 
-	v = fake.CreditCardNum("visa")
-	if v == "" {
-		t.Error("CreditCardNum failed")
+		v = fake.CreditCardNum("visa")
+		if v == "" {
+			t.Errorf("CreditCardNum failed with lang %s", lang)
+		}
 	}
 }

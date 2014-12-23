@@ -7,50 +7,53 @@ import (
 )
 
 func TestAddresses(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.Continent()
-	if v == "" {
-		t.Error("Continent failed")
-	}
+		v := fake.Continent()
+		if v == "" {
+			t.Errorf("Continent failed with lang %s", lang)
+		}
 
-	v = fake.Country()
-	if v == "" {
-		t.Error("Country failed")
-	}
+		v = fake.Country()
+		if v == "" {
+			t.Errorf("Country failed with lang %s", lang)
+		}
 
-	v = fake.City()
-	if v == "" {
-		t.Error("City failed")
-	}
+		v = fake.City()
+		if v == "" {
+			t.Errorf("City failed with lang %s", lang)
+		}
 
-	v = fake.State()
-	if v == "" {
-		t.Error("State failed")
-	}
+		v = fake.State()
+		if v == "" {
+			t.Errorf("State failed with lang %s", lang)
+		}
 
-	v = fake.StateAbbrev()
-	if v == "" {
-		t.Error("StateAbbrev failed")
-	}
+		v = fake.StateAbbrev()
+		if v == "" && lang == "en" {
+			t.Errorf("StateAbbrev failed with lang %s", lang)
+		}
 
-	v = fake.Street()
-	if v == "" {
-		t.Error("Street failed")
-	}
+		v = fake.Street()
+		if v == "" {
+			t.Errorf("Street failed with lang %s", lang)
+		}
 
-	v = fake.StreetAddress()
-	if v == "" {
-		t.Error("StreetAddress failed")
-	}
+		v = fake.StreetAddress()
+		if v == "" {
+			t.Errorf("StreetAddress failed with lang %s", lang)
+		}
 
-	v = fake.Zip()
-	if v == "" {
-		t.Error("Zip failed")
-	}
+		v = fake.Zip()
+		if v == "" {
+			t.Errorf("Zip failed with lang %s", lang)
+		}
 
-	v = fake.Phone()
-	if v == "" {
-		t.Error("Phone failed")
+		v = fake.Phone()
+		if v == "" {
+			t.Errorf("Phone failed with lang %s", lang)
+		}
 	}
 }

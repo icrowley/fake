@@ -7,20 +7,23 @@ import (
 )
 
 func TestJobs(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.Company()
-	if v == "" {
-		t.Error("Company failed")
-	}
+		v := fake.Company()
+		if v == "" {
+			t.Errorf("Company failed with lang %s", lang)
+		}
 
-	v = fake.JobTitle()
-	if v == "" {
-		t.Error("JobTitle failed")
-	}
+		v = fake.JobTitle()
+		if v == "" {
+			t.Errorf("JobTitle failed with lang %s", lang)
+		}
 
-	v = fake.Industry()
-	if v == "" {
-		t.Error("Industry failed")
+		v = fake.Industry()
+		if v == "" {
+			t.Errorf("Industry failed with lang %s", lang)
+		}
 	}
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func TestSetLang(t *testing.T) {
-	err := fake.SetLang("it")
+	err := fake.SetLang("ru")
 	if err != nil {
 		t.Error("SetLang should successfully set lang")
 	}
@@ -18,27 +18,19 @@ func TestSetLang(t *testing.T) {
 	}
 }
 
-func TestFakerEn(t *testing.T) {
-	fake.SetLang("en")
-	name := fake.FullName()
-	if name == "" {
-		t.Error("Name should not be blank")
-	}
-}
-
-func TestFakerCaWithoutCallback(t *testing.T) {
-	fake.SetLang("ca")
-	name := fake.FullName()
-	if name != "" {
+func TestFakerRuWithoutCallback(t *testing.T) {
+	fake.SetLang("ru")
+	brand := fake.Brand()
+	if brand != "" {
 		t.Error("Fake call with no samples should return blank string")
 	}
 }
 
-func TestFakerCaWithCallback(t *testing.T) {
-	fake.SetLang("ca")
+func TestFakerRuWithCallback(t *testing.T) {
+	fake.SetLang("ru")
 	fake.EnFallback(true)
-	name := fake.FullName()
-	if name == "" {
+	brand := fake.Brand()
+	if brand == "" {
 		t.Error("Fake call for name with no samples with callback should not return blank string")
 	}
 }

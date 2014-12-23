@@ -7,20 +7,23 @@ import (
 )
 
 func TestPersonal(t *testing.T) {
-	fake.SetLang("en")
+	langs := []string{"en", "ru"}
+	for _, lang := range langs {
+		fake.SetLang(lang)
 
-	v := fake.Gender()
-	if v == "" {
-		t.Error("Gender failed")
-	}
+		v := fake.Gender()
+		if v == "" {
+			t.Errorf("Gender failed with lang %s", lang)
+		}
 
-	v = fake.GenderAbbrev()
-	if v == "" {
-		t.Error("GenderAbbrev failed")
-	}
+		v = fake.GenderAbbrev()
+		if v == "" {
+			t.Errorf("GenderAbbrev failed with lang %s", lang)
+		}
 
-	v = fake.Language()
-	if v == "" {
-		t.Error("Language failed")
+		v = fake.Language()
+		if v == "" {
+			t.Errorf("Language failed with lang %s", lang)
+		}
 	}
 }
