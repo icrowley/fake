@@ -1,4 +1,4 @@
-package fake_test
+package test
 
 import (
 	"github.com/icrowley/fake"
