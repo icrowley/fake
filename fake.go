@@ -17,6 +17,7 @@ var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 var lang = "en"
 var useExternalData = false
 var enFallback = false
+var availLangs = GetLangs()
 
 var (
 	ErrInsufficientParams = fmt.Errorf("Insufficient params to lookup the samples")
@@ -24,10 +25,17 @@ var (
 	ErrNoSamplesFn        = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
 
-func SetLang(newLang string) error {
-	availLangs := []string{"en", "br", "ca", "da", "de", "fi", "fr", "mx", "nl", "se", "sn", "uk", "us", "ja", "ar", "cn", "cs",
-		"ga", "it", "kr", "nb", "ph", "th", "vn"}
+func GetLangs() []string {
+	var langs []string
+	for k, v := range data {
+		if v.isDir && k != "/" && k != "/data" {
+			langs = append(langs, strings.Replace(k, "/data", "", 1))
+		}
+	}
+	return langs
+}
 
+func SetLang(newLang string) error {
 	found := false
 	for _, l := range availLangs {
 		if newLang == l {

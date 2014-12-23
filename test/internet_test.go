@@ -7,8 +7,7 @@ import (
 )
 
 func TestInternet(t *testing.T) {
-	langs := []string{"en", "ru"}
-	for _, lang := range langs {
+	for _, lang := range fake.GetLangs() {
 		fake.SetLang(lang)
 
 		v := fake.UserName()

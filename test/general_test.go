@@ -7,8 +7,7 @@ import (
 )
 
 func TestGeneral(t *testing.T) {
-	langs := []string{"en", "ru"}
-	for _, lang := range langs {
+	for _, lang := range fake.GetLangs() {
 		fake.SetLang(lang)
 
 		v := fake.Password(4, 10, true, true, true)
