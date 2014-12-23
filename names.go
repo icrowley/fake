@@ -57,11 +57,11 @@ func Patronymic() string {
 }
 
 func prefix(gender string) string {
-	return lookup(lang, gender+"_prefixes", false)
+	return lookup(lang, gender+"_name_prefixes", false)
 }
 
 func suffix(gender string) string {
-	return lookup(lang, gender+"_suffixes", false)
+	return lookup(lang, gender+"_name_suffixes", false)
 }
 
 func fullNameWithPrefix(gender string) string {
