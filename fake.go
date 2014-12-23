@@ -1,4 +1,3 @@
-// Package fake is the fake data generatror for go (Golang), heavily inspired by forgery and ffaker Ruby gems
 package fake
 
 import (
