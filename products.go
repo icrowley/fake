@@ -1,10 +1,7 @@
 package fake
 
 func Brand() string {
-	if r.Intn(2) == 0 {
-		return lookup(lang, "brands", true) + " " + lookup(lang, "brands", true)
-	}
-	return lookup(lang, "adjectives", true) + " " + lookup(lang, "brands", true)
+	return Company()
 }
 
 func ProductName() string {
