@@ -2,8 +2,12 @@
 Package fake is the fake data generatror for go (Golang), heavily inspired by forgery and ffaker Ruby gems
 
 Most data and methods are ported from forgery/ffaker Ruby gems.
+
 Currently english and russian languages are available.
-Feel free to add other languages, but don't forget to regenerate data.go file using `github.com/mjibson/esc` tool and `esc -o data.go -pkg fake data` command because Fake embeds files unless you call `UseExternalData(true)` in order to be able to work without external file dependencies when compiled.
+
+For the list of available methods please look at https://godoc.org/github.com/icrowley/fake.
+
+Fake embeds samples data files unless you call UseExternalData(true) in order to be able to work without external files dependencies when compiled, so, if you add new data files or make changes to existing ones don't forget to regenerate data.go file using github.com/mjibson/esc tool and esc -o data.go -pkg fake data command (or you can just use go generate command if you are using Go 1.4 or later).
 
 Examples:
 	name := fake.FirstName()
@@ -39,6 +43,9 @@ import (
 	"strings"
 	"time"
 )
+
+//go:generate go get github.com/mjibson/esc
+//go:generate esc -o data.go -pkg fake data
 
 // cat/subcat/lang/samples
 type samplesTree map[string]map[string][]string
