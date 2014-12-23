@@ -2,14 +2,11 @@ sudo: false
 language: go
 
 go:
+  - 1.1
+  - 1.2
   - 1.3
   - 1.4
+  - tip
 
 install:
-  - go get -t -v -d ./...
-
-script:
-  - go get
-  - go get gopkg.in/check.v1
-  - go test ./...
-  - go build
+  - go get -v -d ./...
