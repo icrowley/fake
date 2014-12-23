@@ -19,6 +19,8 @@ var creditCards = map[string]creditCard{
 	"discover":   {"Discover", 16, []int{6011}},
 }
 
+// CreditCardType returns one of the following credit values:
+// VISA, MasterCard, American Express and Discover
 func CreditCardType() string {
 	n := len(creditCards)
 	var vendors []string
@@ -29,12 +31,13 @@ func CreditCardType() string {
 	return vendors[r.Intn(n)]
 }
 
+// CreditCardNum generated credit card number according to the card number rules
 func CreditCardNum(vendor string) string {
 	if vendor != "" {
 		vendor = strings.ToLower(vendor)
 	} else {
 		var vendors []string
-		for v, _ := range creditCards {
+		for v := range creditCards {
 			vendors = append(vendors, v)
 		}
 		vendor = vendors[r.Intn(len(vendors))]

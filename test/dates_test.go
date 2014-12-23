@@ -2,7 +2,6 @@ package test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/icrowley/fake"
 )
@@ -41,9 +40,8 @@ func TestDates(t *testing.T) {
 			t.Errorf("MonthNum failed with lang %s", lang)
 		}
 
-		n = fake.Year(50, 20)
-		year := time.Now().Year()
-		if n < year-50 || n > year+20 {
+		n = fake.Year(1950, 2020)
+		if n < 1950 || n > 2020 {
 			t.Errorf("Year failed with lang %s", lang)
 		}
 	}

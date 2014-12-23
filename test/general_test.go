@@ -30,9 +30,9 @@ func TestGeneral(t *testing.T) {
 			t.Errorf("HexColor failed with lang %s", lang)
 		}
 
-		v = fake.ShortHexColor()
+		v = fake.HexColorShort()
 		if v == "" {
-			t.Errorf("ShortHexColor failed with lang %s", lang)
+			t.Errorf("HexColorShort failed with lang %s", lang)
 		}
 
 		v = fake.DigitsN(2)

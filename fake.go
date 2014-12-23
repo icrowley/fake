@@ -1,3 +1,4 @@
+// Package fake is the fake data generatror for go (Golang), heavily inspired by forgery and ffaker Ruby gems
 package fake
 
 import (
@@ -20,11 +21,13 @@ var enFallback = true
 var availLangs = GetLangs()
 
 var (
-	ErrInsufficientParams = fmt.Errorf("Insufficient params to lookup the samples")
-	ErrNoLanguageFn       = func(lang string) error { return fmt.Errorf("The language passed (%s) is not available", lang) }
-	ErrNoSamplesFn        = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
+	// ErrNoLanguageFn is the error that indicates that given language is not available
+	ErrNoLanguageFn = func(lang string) error { return fmt.Errorf("The language passed (%s) is not available", lang) }
+	// ErrNoSamplesFn is the error that indicates that there are no samples for the given language
+	ErrNoSamplesFn = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
 
+// GetLangs returns a slice of available languages
 func GetLangs() []string {
 	var langs []string
 	for k, v := range data {
@@ -35,6 +38,8 @@ func GetLangs() []string {
 	return langs
 }
 
+// SetLang sets the language in which the data should be generated
+// returns error if passed language is not available
 func SetLang(newLang string) error {
 	found := false
 	for _, l := range availLangs {
@@ -50,10 +55,12 @@ func SetLang(newLang string) error {
 	return nil
 }
 
+// UseExternalData sets the flag that allows using of external files as data providers (fake uses embedded ones by default)
 func UseExternalData(flag bool) {
 	useExternalData = flag
 }
 
+// EnFallback sets the flag that allows fake to fallback to englsh samples if the ones for the used languaged are not available
 func EnFallback(flag bool) {
 	enFallback = flag
 }
