@@ -20,6 +20,7 @@ func TestSetLang(t *testing.T) {
 
 func TestFakerRuWithoutCallback(t *testing.T) {
 	fake.SetLang("ru")
+	fake.EnFallback(false)
 	brand := fake.Brand()
 	if brand != "" {
 		t.Error("Fake call with no samples should return blank string")

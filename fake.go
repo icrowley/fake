@@ -16,7 +16,7 @@ var samplesCache = make(samplesTree)
 var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 var lang = "en"
 var useExternalData = false
-var enFallback = false
+var enFallback = true
 var availLangs = GetLangs()
 
 var (
@@ -29,7 +29,7 @@ func GetLangs() []string {
 	var langs []string
 	for k, v := range data {
 		if v.isDir && k != "/" && k != "/data" {
-			langs = append(langs, strings.Replace(k, "/data", "", 1))
+			langs = append(langs, strings.Replace(k, "/data/", "", 1))
 		}
 	}
 	return langs
