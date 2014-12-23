@@ -1,11 +1,18 @@
 package fake
 
 func Brand() string {
-	return ""
+	if r.Intn(2) == 0 {
+		return lookup(lang, "brands", true) + " " + lookup(lang, "brands", true)
+	}
+	return lookup(lang, "adjectives", true) + " " + lookup(lang, "brands", true)
 }
 
 func ProductName() string {
-	return ""
+	productName := lookup(lang, "adjectives", true) + " " + lookup(lang, "nouns", true)
+	if r.Intn(2) == 1 {
+		productName = lookup(lang, "adjectives", true) + " " + productName
+	}
+	return productName
 }
 
 func Product() string {
@@ -13,5 +20,6 @@ func Product() string {
 }
 
 func Model() string {
-	return ""
+	seps := []string{"", " ", "-"}
+	return CharactersN(r.Intn(3)+1) + seps[r.Intn(len(seps))] + Digits()
 }

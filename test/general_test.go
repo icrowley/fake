@@ -33,4 +33,14 @@ func TestGeneral(t *testing.T) {
 	if v == "" {
 		t.Error("ShortHexColor failed")
 	}
+
+	v = fake.DigitsN(2)
+	if v == "" {
+		t.Error("DigitsN failed")
+	}
+
+	v = fake.Digits()
+	if v == "" {
+		t.Error("Digits failed")
+	}
 }

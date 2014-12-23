@@ -22,11 +22,11 @@ func EmailAddress() string {
 }
 
 func EmailSubject() string {
-	return "Subject"
+	return Sentence()
 }
 
 func EmailBody() string {
-	return "Body"
+	return Paragraphs()
 }
 
 func DomainZone() string {

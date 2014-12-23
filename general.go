@@ -41,6 +41,18 @@ func Color() string {
 	return lookup(lang, "colors", true)
 }
 
+func DigitsN(n int) string {
+	digits := make([]rune, n)
+	for i := 0; i < n; i++ {
+		digits[i] = numeric[r.Intn(len(numeric))]
+	}
+	return string(digits)
+}
+
+func Digits() string {
+	return DigitsN(r.Intn(5) + 1)
+}
+
 func hexDigitsStr(n int) string {
 	var num []rune
 	for i := 0; i < n; i++ {
