@@ -10,7 +10,7 @@ Fake is a fake data generator for Go (Golang), heavily inspired by the forgery a
 Most data and methods are ported from forgery/ffaker Ruby gems.
 For the list of available methods please look at https://godoc.org/github.com/icrowley/fake.
 Currently english and russian languages are available.
-Feel free to add other languages, but don't forget to regenerate data.go file using `github.com/mjibson/esc` tool and `esc -o data.go -pkg fake data` command because Fake embeds files unless you call `UseExternalData(true)` in order to be able to work file without dependencies when compiled.
+Feel free to add other languages, but don't forget to regenerate data.go file using `github.com/mjibson/esc` tool and `esc -o data.go -pkg fake data` command because Fake embeds files unless you call `UseExternalData(true)` in order to be able to work without external files dependencies when compiled.
 
 ## Install
 
