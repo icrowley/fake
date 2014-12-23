@@ -6,7 +6,15 @@ import (
 )
 
 func UserName() string {
-	return lookup(lang, "usernames", true)
+	gender := randGender()
+	switch r.Intn(2) {
+	case 0:
+		return lookup("en", gender+"_first_names", false) + lookup(lang, gender+"_last_names", false)
+	case 1:
+		return Character() + lookup(lang, gender+"_last_names", false)
+	default:
+		return strings.Replace(WordsN(r.Intn(3)+1), " ", "_", -1)
+	}
 }
 
 func TopLevelDomain() string {
