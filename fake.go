@@ -51,6 +51,7 @@ import (
 // cat/subcat/lang/samples
 type samplesTree map[string]map[string][]string
 
+var samplesLock sync.Mutex
 var samplesCache = make(samplesTree)
 var r = rand.New(&rndSrc{src: rand.NewSource(time.Now().UnixNano())})
 var lang = "en"
@@ -154,6 +155,13 @@ func generate(lag, cat string, fallback bool) string {
 }
 
 func lookup(lang, cat string, fallback bool) string {
+	samplesLock.Lock()
+	s := _lookup(lang, cat, fallback)
+	samplesLock.Unlock()
+	return s
+}
+
+func _lookup(lang, cat string, fallback bool) string {
 	var samples []string
 
 	if samplesCache.hasKeyPath(lang, cat) {
@@ -163,7 +171,7 @@ func lookup(lang, cat string, fallback bool) string {
 		samples, err = populateSamples(lang, cat)
 		if err != nil {
 			if lang != "en" && fallback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
-				return lookup("en", cat, false)
+				return _lookup("en", cat, false)
 			}
 			return ""
 		}
