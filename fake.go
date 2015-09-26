@@ -41,6 +41,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -51,7 +52,7 @@ import (
 type samplesTree map[string]map[string][]string
 
 var samplesCache = make(samplesTree)
-var r = rand.New(rand.NewSource(time.Now().UnixNano()))
+var r = rand.New(&rndSrc{src: rand.NewSource(time.Now().UnixNano())})
 var lang = "en"
 var useExternalData = false
 var enFallback = true
@@ -63,6 +64,24 @@ var (
 	// ErrNoSamplesFn is the error that indicates that there are no samples for the given language
 	ErrNoSamplesFn = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
+
+type rndSrc struct {
+	mtx sync.Mutex
+	src rand.Source
+}
+
+func (s *rndSrc) Int63() int64 {
+	s.mtx.Lock()
+	n := s.src.Int63()
+	s.mtx.Unlock()
+	return n
+}
+
+func (s *rndSrc) Seed(n int64) {
+	s.mtx.Lock()
+	s.src.Seed(n)
+	s.mtx.Unlock()
+}
 
 // GetLangs returns a slice of available languages
 func GetLangs() []string {
