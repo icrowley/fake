@@ -46,6 +46,14 @@ func TestConcurrentSafety(t *testing.T) {
 		go func() {
 			for j := 0; j < 1000; j++ {
 				fake.FirstName()
+				fake.LastName()
+				fake.Gender()
+				fake.FullName()
+				fake.Day()
+				fake.Country()
+				fake.Company()
+				fake.Industry()
+				fake.Street()
 			}
 			doneChan <- struct{}{}
 		}()
