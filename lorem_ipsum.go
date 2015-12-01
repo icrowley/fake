@@ -37,6 +37,30 @@ func WordsN(n int) string {
 	return strings.Join(words, " ")
 }
 
+func containsWord(words []string, word string) bool {
+	for _, w := range words {
+		if w == word {
+			return true
+		}
+	}
+	return false
+}
+
+// WordsNUnique generates n unique random words
+func WordsNUnique(n int) []string {
+	words := make([]string, n)
+	word := ""
+	for i := 0; i < n; i++ {
+		word = word + Word()
+		if !containsWord(words, word) {
+			words[i] = word
+			i++
+			word = ""
+		}
+	}
+	return words
+}
+
 // Words generates from 1 to 5 random words
 func Words() string {
 	return WordsN(r.Intn(5) + 1)

@@ -74,5 +74,10 @@ func TestLoremIpsum(t *testing.T) {
 		if v == "" {
 			t.Errorf("Paragraphs failed with lang %s", lang)
 		}
+
+		vs := fake.WordsNUnique(251)
+		if len(vs) != 251 {
+			t.Errorf("WordsNUnique failed with lang %s", lang)
+		}
 	}
 }
