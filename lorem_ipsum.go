@@ -1,8 +1,6 @@
 package fake
 
-import (
-	"strings"
-)
+import "strings"
 
 // Character generates random character in the given language
 func Character() string {
@@ -49,14 +47,14 @@ func containsWord(words []string, word string) bool {
 // WordsNUnique generates n unique random words
 func WordsNUnique(n int) []string {
 	words := make([]string, n)
-	word := ""
-	for i := 0; i < n; i++ {
-		word = word + Word()
-		if !containsWord(words, word) {
+	word := Word()
+	for i := 0; i < n; {
+		if word != "" && !containsWord(words, word) {
 			words[i] = word
 			i++
 			word = ""
 		}
+		word = word + Word()
 	}
 	return words
 }
