@@ -45,7 +45,7 @@ go test
 
 ```go
 name := fake.FirstName()
-fullname = := fake.FullName()
+fullname := fake.FullName()
 product := fake.Product()
 ```
 
