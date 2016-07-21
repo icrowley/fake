@@ -186,7 +186,7 @@ func FSMustString(useLocal bool, name string) string {
 	return string(FSMustByte(useLocal, name))
 }
 
-var _escData = map[string]*_escFile{
+var data = map[string]*_escFile{
 
 	"/data/en/adjectives": {
 		local:   "data/en/adjectives",
