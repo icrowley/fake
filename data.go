@@ -38,7 +38,7 @@ type _escFile struct {
 }
 
 func (_escLocalFS) Open(name string) (http.File, error) {
-	f, present := _escData[path.Clean(name)]
+	f, present := data[path.Clean(name)]
 	if !present {
 		return nil, os.ErrNotExist
 	}
@@ -46,7 +46,7 @@ func (_escLocalFS) Open(name string) (http.File, error) {
 }
 
 func (_escStaticFS) prepare(name string) (*_escFile, error) {
-	f, present := _escData[path.Clean(name)]
+	f, present := data[path.Clean(name)]
 	if !present {
 		return nil, os.ErrNotExist
 	}
