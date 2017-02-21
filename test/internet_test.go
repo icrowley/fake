@@ -54,5 +54,10 @@ func TestInternet(t *testing.T) {
 		if v == "" {
 			t.Errorf("UserAgent failed with lang %s", lang)
 		}
+
+		v = fake.IPv6()
+		if v == "" {
+			t.Errorf("IPv6 failed with lang %s", lang)
+		}
 	}
 }
