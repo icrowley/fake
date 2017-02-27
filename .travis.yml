@@ -9,4 +9,7 @@ go:
   - tip
 
 install:
+  - make
   - go get -v -d ./...
+
+script: make test
