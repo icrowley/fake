@@ -41,6 +41,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -50,8 +51,9 @@ import (
 // cat/subcat/lang/samples
 type samplesTree map[string]map[string][]string
 
+var samplesLock sync.Mutex
 var samplesCache = make(samplesTree)
-var r = rand.New(rand.NewSource(time.Now().UnixNano()))
+var r = rand.New(&rndSrc{src: rand.NewSource(time.Now().UnixNano())})
 var lang = "en"
 var useExternalData = false
 var enFallback = true
@@ -63,6 +65,24 @@ var (
 	// ErrNoSamplesFn is the error that indicates that there are no samples for the given language
 	ErrNoSamplesFn = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
+
+type rndSrc struct {
+	mtx sync.Mutex
+	src rand.Source
+}
+
+func (s *rndSrc) Int63() int64 {
+	s.mtx.Lock()
+	n := s.src.Int63()
+	s.mtx.Unlock()
+	return n
+}
+
+func (s *rndSrc) Seed(n int64) {
+	s.mtx.Lock()
+	s.src.Seed(n)
+	s.mtx.Unlock()
+}
 
 // GetLangs returns a slice of available languages
 func GetLangs() []string {
@@ -135,6 +155,13 @@ func generate(lag, cat string, fallback bool) string {
 }
 
 func lookup(lang, cat string, fallback bool) string {
+	samplesLock.Lock()
+	s := _lookup(lang, cat, fallback)
+	samplesLock.Unlock()
+	return s
+}
+
+func _lookup(lang, cat string, fallback bool) string {
 	var samples []string
 
 	if samplesCache.hasKeyPath(lang, cat) {
@@ -144,7 +171,7 @@ func lookup(lang, cat string, fallback bool) string {
 		samples, err = populateSamples(lang, cat)
 		if err != nil {
 			if lang != "en" && fallback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
-				return lookup("en", cat, false)
+				return _lookup("en", cat, false)
 			}
 			return ""
 		}
