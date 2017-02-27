@@ -49,5 +49,10 @@ func TestInternet(t *testing.T) {
 		if v == "" {
 			t.Errorf("IPv4 failed with lang %s", lang)
 		}
+
+		v = fake.UserAgent()
+		if v == "" {
+			t.Errorf("UserAgent failed with lang %s", lang)
+		}
 	}
 }

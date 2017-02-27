@@ -3,6 +3,8 @@ package fake
 import (
 	"strconv"
 	"strings"
+
+	"github.com/corpix/uarand"
 )
 
 // UserName generates user name in one of the following forms
@@ -56,4 +58,9 @@ func IPv4() string {
 		ip[i] = strconv.Itoa(r.Intn(256))
 	}
 	return strings.Join(ip, ".")
+}
+
+// UserAgent generates a random user agent.
+func UserAgent() string {
+	return uarand.GetRandom()
 }
