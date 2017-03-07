@@ -92,6 +92,11 @@ func SetLang(newLang string) error {
 	return nil
 }
 
+// SetRandSource sets the source of the random generator
+func SetRandSource(source *rand.Rand) {
+	r = source
+}
+
 // UseExternalData sets the flag that allows using of external files as data providers (fake uses embedded ones by default)
 func UseExternalData(flag bool) {
 	useExternalData = flag
