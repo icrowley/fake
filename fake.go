@@ -49,9 +49,13 @@ import (
 
 // cat/subcat/lang/samples
 type samplesTree map[string]map[string][]string
+type lockedSource struct {
+	lk  sync.Mutex
+	src rand.Source
+}
 
 var samplesCache = make(samplesTree)
-var r = rand.New(rand.NewSource(time.Now().UnixNano()))
+var r = rand.New(&lockedSource{src: rand.NewSource(time.Now().UnixNano())})
 var lang = "en"
 var useExternalData = false
 var enFallback = true
@@ -63,6 +67,20 @@ var (
 	// ErrNoSamplesFn is the error that indicates that there are no samples for the given language
 	ErrNoSamplesFn = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
+
+// copy from mant/rand
+func (r *lockedSource) Int63() (n int64) {
+	r.lk.Lock()
+	n = r.src.Int63()
+	r.lk.Unlock()
+	return
+}
+
+func (r *lockedSource) Seed(seed int64) {
+	r.lk.Lock()
+	r.src.Seed(seed)
+	r.lk.Unlock()
+}
 
 // GetLangs returns a slice of available languages
 func GetLangs() []string {
