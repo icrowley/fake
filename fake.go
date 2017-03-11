@@ -64,6 +64,12 @@ var (
 	ErrNoSamplesFn = func(lang string) error { return fmt.Errorf("No samples found for language: %s", lang) }
 )
 
+// Seed uses the provided seed value to initialize the internal PRNG to a
+// deterministic state.
+func Seed(seed int64) {
+	r.Seed(seed)
+}
+
 // GetLangs returns a slice of available languages
 func GetLangs() []string {
 	var langs []string
