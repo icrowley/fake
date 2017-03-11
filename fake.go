@@ -127,7 +127,7 @@ func join(parts ...string) string {
 	return strings.Join(filtered, " ")
 }
 
-func generate(lag, cat string, fallback bool) string {
+func generate(lang, cat string, fallback bool) string {
 	format := lookup(lang, cat+"_format", fallback)
 	var result string
 	for _, ru := range format {
