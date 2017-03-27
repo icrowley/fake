@@ -15,7 +15,7 @@ func TestGeo(t *testing.T) {
 			t.Errorf("Latitude failed with lang %s", lang)
 		}
 
-		i := fake.LatitudeDegress()
+		i := fake.LatitudeDegreess()
 		if i < -180 || i > 180 {
 			t.Errorf("LatitudeDegress failed with lang %s", lang)
 		}
