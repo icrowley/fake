@@ -82,3 +82,9 @@ password := fake.Paragraph()
 Dmitry Afanasyev,
 http://twitter.com/i_crowley
 dimarzio1986@gmail.com
+
+
+### Maintainers
+
+Dmitry Moskowski
+https://github.com/corpix
