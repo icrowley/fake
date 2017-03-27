@@ -1,61 +1,59 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestInternet(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.UserName()
+		v := UserName()
 		if v == "" {
 			t.Errorf("UserName failed with lang %s", lang)
 		}
 
-		v = fake.TopLevelDomain()
+		v = TopLevelDomain()
 		if v == "" {
 			t.Errorf("TopLevelDomain failed with lang %s", lang)
 		}
 
-		v = fake.DomainName()
+		v = DomainName()
 		if v == "" {
 			t.Errorf("DomainName failed with lang %s", lang)
 		}
 
-		v = fake.EmailAddress()
+		v = EmailAddress()
 		if v == "" {
 			t.Errorf("EmailAddress failed with lang %s", lang)
 		}
 
-		v = fake.EmailSubject()
+		v = EmailSubject()
 		if v == "" {
 			t.Errorf("EmailSubject failed with lang %s", lang)
 		}
 
-		v = fake.EmailBody()
+		v = EmailBody()
 		if v == "" {
 			t.Errorf("EmailBody failed with lang %s", lang)
 		}
 
-		v = fake.DomainZone()
+		v = DomainZone()
 		if v == "" {
 			t.Errorf("DomainZone failed with lang %s", lang)
 		}
 
-		v = fake.IPv4()
+		v = IPv4()
 		if v == "" {
 			t.Errorf("IPv4 failed with lang %s", lang)
 		}
 
-		v = fake.UserAgent()
+		v = UserAgent()
 		if v == "" {
 			t.Errorf("UserAgent failed with lang %s", lang)
 		}
 
-		v = fake.IPv6()
+		v = IPv6()
 		if v == "" {
 			t.Errorf("IPv6 failed with lang %s", lang)
 		}

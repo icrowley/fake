@@ -1,46 +1,44 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestGeneral(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.Password(4, 10, true, true, true)
+		v := Password(4, 10, true, true, true)
 		if v == "" {
 			t.Errorf("Password failed with lang %s", lang)
 		}
 
-		v = fake.SimplePassword()
+		v = SimplePassword()
 		if v == "" {
 			t.Errorf("SimplePassword failed with lang %s", lang)
 		}
 
-		v = fake.Color()
+		v = Color()
 		if v == "" {
 			t.Errorf("Color failed with lang %s", lang)
 		}
 
-		v = fake.HexColor()
+		v = HexColor()
 		if v == "" {
 			t.Errorf("HexColor failed with lang %s", lang)
 		}
 
-		v = fake.HexColorShort()
+		v = HexColorShort()
 		if v == "" {
 			t.Errorf("HexColorShort failed with lang %s", lang)
 		}
 
-		v = fake.DigitsN(2)
+		v = DigitsN(2)
 		if v == "" {
 			t.Errorf("DigitsN failed with lang %s", lang)
 		}
 
-		v = fake.Digits()
+		v = Digits()
 		if v == "" {
 			t.Errorf("Digits failed with lang %s", lang)
 		}

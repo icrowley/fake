@@ -1,31 +1,29 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestProducts(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.Brand()
+		v := Brand()
 		if v == "" {
 			t.Errorf("Brand failed with lang %s", lang)
 		}
 
-		v = fake.ProductName()
+		v = ProductName()
 		if v == "" {
 			t.Errorf("ProductName failed with lang %s", lang)
 		}
 
-		v = fake.Product()
+		v = Product()
 		if v == "" {
 			t.Errorf("Product failed with lang %s", lang)
 		}
 
-		v = fake.Model()
+		v = Model()
 		if v == "" {
 			t.Errorf("Model failed with lang %s", lang)
 		}

@@ -1,21 +1,19 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestCurrencies(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.Currency()
+		v := Currency()
 		if v == "" {
 			t.Errorf("Currency failed with lang %s", lang)
 		}
 
-		v = fake.CurrencyCode()
+		v = CurrencyCode()
 		if v == "" {
 			t.Errorf("CurrencyCode failed with lang %s", lang)
 		}

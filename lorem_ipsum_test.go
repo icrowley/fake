@@ -1,76 +1,74 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestLoremIpsum(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.Character()
+		v := Character()
 		if v == "" {
 			t.Errorf("Character failed with lang %s", lang)
 		}
 
-		v = fake.CharactersN(2)
+		v = CharactersN(2)
 		if v == "" {
 			t.Errorf("CharactersN failed with lang %s", lang)
 		}
 
-		v = fake.Characters()
+		v = Characters()
 		if v == "" {
 			t.Errorf("Characters failed with lang %s", lang)
 		}
 
-		v = fake.Word()
+		v = Word()
 		if v == "" {
 			t.Errorf("Word failed with lang %s", lang)
 		}
 
-		v = fake.WordsN(2)
+		v = WordsN(2)
 		if v == "" {
 			t.Errorf("WordsN failed with lang %s", lang)
 		}
 
-		v = fake.Words()
+		v = Words()
 		if v == "" {
 			t.Errorf("Words failed with lang %s", lang)
 		}
 
-		v = fake.Title()
+		v = Title()
 		if v == "" {
 			t.Errorf("Title failed with lang %s", lang)
 		}
 
-		v = fake.Sentence()
+		v = Sentence()
 		if v == "" {
 			t.Errorf("Sentence failed with lang %s", lang)
 		}
 
-		v = fake.SentencesN(2)
+		v = SentencesN(2)
 		if v == "" {
 			t.Errorf("SentencesN failed with lang %s", lang)
 		}
 
-		v = fake.Sentences()
+		v = Sentences()
 		if v == "" {
 			t.Errorf("Sentences failed with lang %s", lang)
 		}
 
-		v = fake.Paragraph()
+		v = Paragraph()
 		if v == "" {
 			t.Errorf("Paragraph failed with lang %s", lang)
 		}
 
-		v = fake.ParagraphsN(2)
+		v = ParagraphsN(2)
 		if v == "" {
 			t.Errorf("ParagraphsN failed with lang %s", lang)
 		}
 
-		v = fake.Paragraphs()
+		v = Paragraphs()
 		if v == "" {
 			t.Errorf("Paragraphs failed with lang %s", lang)
 		}

@@ -1,36 +1,34 @@
-package test
+package fake
 
 import (
-	"github.com/icrowley/fake"
-
 	"testing"
 )
 
 func TestSetLang(t *testing.T) {
-	err := fake.SetLang("ru")
+	err := SetLang("ru")
 	if err != nil {
 		t.Error("SetLang should successfully set lang")
 	}
 
-	err = fake.SetLang("sd")
+	err = SetLang("sd")
 	if err == nil {
 		t.Error("SetLang with nonexistent lang should return error")
 	}
 }
 
 func TestFakerRuWithoutCallback(t *testing.T) {
-	fake.SetLang("ru")
-	fake.EnFallback(false)
-	brand := fake.Brand()
+	SetLang("ru")
+	EnFallback(false)
+	brand := Brand()
 	if brand != "" {
 		t.Error("Fake call with no samples should return blank string")
 	}
 }
 
 func TestFakerRuWithCallback(t *testing.T) {
-	fake.SetLang("ru")
-	fake.EnFallback(true)
-	brand := fake.Brand()
+	SetLang("ru")
+	EnFallback(true)
+	brand := Brand()
 	if brand == "" {
 		t.Error("Fake call for name with no samples with callback should not return blank string")
 	}
@@ -45,15 +43,15 @@ func TestConcurrentSafety(t *testing.T) {
 	for i := 0; i < workerCount; i++ {
 		go func() {
 			for j := 0; j < 1000; j++ {
-				fake.FirstName()
-				fake.LastName()
-				fake.Gender()
-				fake.FullName()
-				fake.Day()
-				fake.Country()
-				fake.Company()
-				fake.Industry()
-				fake.Street()
+				FirstName()
+				LastName()
+				Gender()
+				FullName()
+				Day()
+				Country()
+				Company()
+				Industry()
+				Street()
 			}
 			doneChan <- struct{}{}
 		}()

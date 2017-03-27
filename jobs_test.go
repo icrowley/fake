@@ -1,26 +1,24 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestJobs(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.Company()
+		v := Company()
 		if v == "" {
 			t.Errorf("Company failed with lang %s", lang)
 		}
 
-		v = fake.JobTitle()
+		v = JobTitle()
 		if v == "" {
 			t.Errorf("JobTitle failed with lang %s", lang)
 		}
 
-		v = fake.Industry()
+		v = Industry()
 		if v == "" {
 			t.Errorf("Industry failed with lang %s", lang)
 		}

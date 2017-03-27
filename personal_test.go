@@ -1,26 +1,24 @@
-package test
+package fake
 
 import (
 	"testing"
-
-	"github.com/icrowley/fake"
 )
 
 func TestPersonal(t *testing.T) {
-	for _, lang := range fake.GetLangs() {
-		fake.SetLang(lang)
+	for _, lang := range GetLangs() {
+		SetLang(lang)
 
-		v := fake.Gender()
+		v := Gender()
 		if v == "" {
 			t.Errorf("Gender failed with lang %s", lang)
 		}
 
-		v = fake.GenderAbbrev()
+		v = GenderAbbrev()
 		if v == "" {
 			t.Errorf("GenderAbbrev failed with lang %s", lang)
 		}
 
-		v = fake.Language()
+		v = Language()
 		if v == "" {
 			t.Errorf("Language failed with lang %s", lang)
 		}
