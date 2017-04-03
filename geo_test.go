@@ -13,9 +13,9 @@ func TestGeo(t *testing.T) {
 			t.Errorf("Latitude failed with lang %s", lang)
 		}
 
-		i := LatitudeDegreess()
+		i := LatitudeDegrees()
 		if i < -180 || i > 180 {
-			t.Errorf("LatitudeDegress failed with lang %s", lang)
+			t.Errorf("LatitudeDegrees failed with lang %s", lang)
 		}
 
 		i = LatitudeMinutes()
