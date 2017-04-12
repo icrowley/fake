@@ -8,8 +8,8 @@ func TestGeo(t *testing.T) {
 	for _, lang := range GetLangs() {
 		SetLang(lang)
 
-		f := Latitute()
-		if f == 0 {
+		f := Latitude()
+		if f < -90 || f > 90 {
 			t.Errorf("Latitude failed with lang %s", lang)
 		}
 
@@ -34,7 +34,7 @@ func TestGeo(t *testing.T) {
 		}
 
 		f = Longitude()
-		if f == 0 {
+		if f < -180 || f > 180 { {
 			t.Errorf("Longitude failed with lang %s", lang)
 		}
 

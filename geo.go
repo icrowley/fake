@@ -1,13 +1,13 @@
 package fake
 
-// Latitute generates latitude
-func Latitute() float32 {
-	return r.Float32() * 180 / 90
+// Latitude generates latitude (from -90.0 to 90.0)
+func Latitude() float32 {
+	return r.Float32()*180 - 90
 }
 
-// LatitudeDegrees generates latitude degrees (from -180 to 180)
+// LatitudeDegrees generates latitude degrees (from -90 to 90)
 func LatitudeDegrees() int {
-	return r.Intn(360) - 180
+	return r.Intn(180) - 90
 }
 
 // LatitudeMinutes generates latitude minutes (from 0 to 60)
@@ -28,7 +28,7 @@ func LatitudeDirection() string {
 	return "S"
 }
 
-// Longitude generates longitude
+// Longitude generates longitude (from -180 to 180)
 func Longitude() float32 {
 	return r.Float32()*360 - 180
 }
