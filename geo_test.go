@@ -34,7 +34,7 @@ func TestGeo(t *testing.T) {
 		}
 
 		f = Longitude()
-		if f < -180 || f > 180 { {
+		if f < -180 || f > 180 {
 			t.Errorf("Longitude failed with lang %s", lang)
 		}
 
