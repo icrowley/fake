@@ -37,7 +37,6 @@ https://godoc.org/github.com/icrowley/fake
 To run the project tests:
 
 ```shell
-cd test
 go test
 ```
 
