@@ -51,13 +51,31 @@ import (
 // cat/subcat/lang/samples
 type samplesTree map[string]map[string][]string
 
-var samplesLock sync.Mutex
-var samplesCache = make(samplesTree)
-var r = rand.New(&rndSrc{src: rand.NewSource(time.Now().UnixNano())})
-var lang = "en"
-var useExternalData = false
-var enFallback = true
-var availLangs = GetLangs()
+// A Faker is a source of fake data.
+type Faker struct {
+	samplesLock     sync.Mutex
+	samplesCache    samplesTree //map[string]map[string][]string
+	r               *rand.Rand
+	lang            string
+	useExternalData bool
+	enFallback      bool
+	availLangs      []string
+}
+
+var f = New()
+
+// New returns a new Faker. Set seed for pseudo-random fake data.
+func New() *Faker {
+	return &Faker{
+		samplesLock:     sync.Mutex{},
+		samplesCache:    make(samplesTree),
+		r:               rand.New(&rndSrc{src: rand.NewSource(time.Now().UnixNano())}),
+		lang:            "en",
+		useExternalData: false,
+		enFallback:      true,
+		availLangs:      GetLangs(),
+	}
+}
 
 var (
 	// ErrNoLanguageFn is the error that indicates that given language is not available
@@ -69,7 +87,13 @@ var (
 // Seed uses the provided seed value to initialize the internal PRNG to a
 // deterministic state.
 func Seed(seed int64) {
-	r.Seed(seed)
+	f.Seed(seed)
+}
+
+// Seed uses the provided seed value to initialize the internal PRNG to a
+// deterministic state.
+func (f *Faker) Seed(seed int64) {
+	f.r.Seed(seed)
 }
 
 type rndSrc struct {
@@ -104,8 +128,14 @@ func GetLangs() []string {
 // SetLang sets the language in which the data should be generated
 // returns error if passed language is not available
 func SetLang(newLang string) error {
+	return f.SetLang(newLang)
+}
+
+// SetLang sets the language in which the data should be generated
+// returns error if passed language is not available
+func (f *Faker) SetLang(newLang string) error {
 	found := false
-	for _, l := range availLangs {
+	for _, l := range f.availLangs {
 		if newLang == l {
 			found = true
 			break
@@ -114,18 +144,28 @@ func SetLang(newLang string) error {
 	if !found {
 		return ErrNoLanguageFn(newLang)
 	}
-	lang = newLang
+	f.lang = newLang
 	return nil
 }
 
 // UseExternalData sets the flag that allows using of external files as data providers (fake uses embedded ones by default)
 func UseExternalData(flag bool) {
-	useExternalData = flag
+	f.UseExternalData(flag)
+}
+
+// UseExternalData sets the flag that allows using of external files as data providers (fake uses embedded ones by default)
+func (f *Faker) UseExternalData(flag bool) {
+	f.useExternalData = flag
 }
 
 // EnFallback sets the flag that allows fake to fallback to englsh samples if the ones for the used languaged are not available
 func EnFallback(flag bool) {
-	enFallback = flag
+	f.EnFallback(flag)
+}
+
+// EnFallback sets the flag that allows fake to fallback to englsh samples if the ones for the used languaged are not available
+func (f *Faker) EnFallback(flag bool) {
+	f.enFallback = flag
 }
 
 func (st samplesTree) hasKeyPath(lang, cat string) bool {
@@ -147,64 +187,64 @@ func join(parts ...string) string {
 	return strings.Join(filtered, " ")
 }
 
-func generate(lang, cat string, fallback bool) string {
-	format := lookup(lang, cat+"_format", fallback)
+func (f *Faker) generate(lang, cat string, fallback bool) string {
+	format := f.lookup(lang, cat+"_format", fallback)
 	var result string
 	for _, ru := range format {
 		if ru != '#' {
 			result += string(ru)
 		} else {
-			result += strconv.Itoa(r.Intn(10))
+			result += strconv.Itoa(f.r.Intn(10))
 		}
 	}
 	return result
 }
 
-func lookup(lang, cat string, fallback bool) string {
-	samplesLock.Lock()
-	s := _lookup(lang, cat, fallback)
-	samplesLock.Unlock()
+func (f *Faker) lookup(lang, cat string, fallback bool) string {
+	f.samplesLock.Lock()
+	s := f._lookup(lang, cat, fallback)
+	f.samplesLock.Unlock()
 	return s
 }
 
-func _lookup(lang, cat string, fallback bool) string {
+func (f *Faker) _lookup(lang, cat string, fallback bool) string {
 	var samples []string
 
-	if samplesCache.hasKeyPath(lang, cat) {
-		samples = samplesCache[lang][cat]
+	if f.samplesCache.hasKeyPath(lang, cat) {
+		samples = f.samplesCache[lang][cat]
 	} else {
 		var err error
-		samples, err = populateSamples(lang, cat)
+		samples, err = f.populateSamples(lang, cat)
 		if err != nil {
-			if lang != "en" && fallback && enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
-				return _lookup("en", cat, false)
+			if lang != "en" && fallback && f.enFallback && err.Error() == ErrNoSamplesFn(lang).Error() {
+				return f._lookup("en", cat, false)
 			}
 			return ""
 		}
 	}
 
-	return samples[r.Intn(len(samples))]
+	return samples[f.r.Intn(len(samples))]
 }
 
-func populateSamples(lang, cat string) ([]string, error) {
-	data, err := readFile(lang, cat)
+func (f *Faker) populateSamples(lang, cat string) ([]string, error) {
+	data, err := f.readFile(lang, cat)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, ok := samplesCache[lang]; !ok {
-		samplesCache[lang] = make(map[string][]string)
+	if _, ok := f.samplesCache[lang]; !ok {
+		f.samplesCache[lang] = make(map[string][]string)
 	}
 
 	samples := strings.Split(strings.TrimSpace(string(data)), "\n")
 
-	samplesCache[lang][cat] = samples
+	f.samplesCache[lang][cat] = samples
 	return samples, nil
 }
 
-func readFile(lang, cat string) ([]byte, error) {
+func (f *Faker) readFile(lang, cat string) ([]byte, error) {
 	fullpath := fmt.Sprintf("/data/%s/%s", lang, cat)
-	file, err := FS(useExternalData).Open(fullpath)
+	file, err := FS(f.useExternalData).Open(fullpath)
 	if err != nil {
 		return nil, ErrNoSamplesFn(lang)
 	}

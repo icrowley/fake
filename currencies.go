@@ -2,10 +2,20 @@ package fake
 
 // Currency generates currency name
 func Currency() string {
-	return lookup(lang, "currencies", true)
+	return f.Currency()
 }
 
 // CurrencyCode generates currency code
 func CurrencyCode() string {
-	return lookup(lang, "currency_codes", true)
+	return f.CurrencyCode()
+}
+
+// Currency generates currency name
+func (f *Faker) Currency() string {
+	return f.lookup(f.lang, "currencies", true)
+}
+
+// CurrencyCode generates currency code
+func (f *Faker) CurrencyCode() string {
+	return f.lookup(f.lang, "currency_codes", true)
 }
