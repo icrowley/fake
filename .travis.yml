@@ -10,11 +10,9 @@ go:
   - 1.8
   - master
   - tip
-  
 matrix: 
-   allow failures:
-    go:
-      - 1.6
-      - 1.7
-      - 1.8
+   allow_failures:
+    - go 1.6
+    - go 1.7
+    - go 1.8
 script: make test
