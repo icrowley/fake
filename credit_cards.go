@@ -70,7 +70,7 @@ func genCCDigit(num []rune) rune {
 	for i := len(num) - 1; i >= 0; i-- {
 		// The next line is equivalent to `n, _ := strconv.Atoi(string(num[i]))`
 		n := int(num[i] - '0')
-		if pos % 2 == 0 {
+		if pos%2 == 0 {
 			n *= 2
 			if n > 9 {
 				n -= 9
@@ -81,7 +81,7 @@ func genCCDigit(num []rune) rune {
 	}
 
 	// https://en.wikipedia.org/wiki/Talk:Luhn_algorithm#Formula_error
-	checksum := (10 - (sum % 10) % 10)
+	checksum := (10 - (sum%10)%10)
 
 	// int => string => array of runes => single rune
 	return []rune(strconv.Itoa(checksum))[0]
