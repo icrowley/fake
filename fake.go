@@ -154,7 +154,9 @@ func generate(lang, cat string, fallback bool) string {
 		if ru != '#' {
 			result += string(ru)
 		} else {
+			samplesLock.Lock()
 			result += strconv.Itoa(r.Intn(10))
+			samplesLock.Unlock()
 		}
 	}
 	return result
