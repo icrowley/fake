@@ -51,6 +51,8 @@ func Street() string {
 
 // StreetAddress generates random street name along with building number
 func StreetAddress() string {
+	samplesLock.Lock()
+	defer samplesLock.Unlock()
 	return join(Street(), strconv.Itoa(r.Intn(100)))
 }
 
